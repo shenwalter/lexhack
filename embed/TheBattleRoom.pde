@@ -6,9 +6,6 @@ float dt = 1;
 int bulletCap = 10;
 Bullet[] bullets = new Bullet[bulletCap];
 
-boolean buttonPressed;
-int buttonX, buttonY, buttonW, buttonH;
-
 void setup() {
   size(640, 360);
   ball = new Ball();
@@ -19,44 +16,19 @@ void setup() {
   for (int i = 0; i< bulletCap; i++) {
     bullets[i] = new Bullet();
   }
-  
-  // Assume the button has not been pressed
-  buttonPressed = false;
- 
-  // Some basic parameters for a button
-  buttonW = 335;
-  buttonH = 100;
-  textSize(buttonH);
-  buttonX = (width-buttonW)/2;
-  buttonY = (height-buttonH)/2;
-  
 }
 
 void draw() {
-  background(255);  
-  if (buttonPressed) {
-      ball.update(dt);
-      ball.show();
-     for (int i = 0; i < Asteroids.length; i++) {
+  background(255);
+  ball.update(dt);
+  ball.show();
+  for (int i = 0; i < Asteroids.length; i++) {
     Asteroids[i].show();
   }
   for (int i = 0; i < bulletCap; i++) {
     bullets[i].update(dt);
     bullets[i].show();
   }
-    println("The button has been pressed");
-  } else {
-    // Show the button
-    fill(255);
-    rect(buttonX, buttonY, buttonW, buttonH);
-    fill(0);
-    text("START", buttonX+10, buttonY+buttonH-10);
-  }
-}
-
-void mousePressed() {
-  if (mouseX > buttonX && mouseX < buttonX+buttonW && mouseY > buttonY && mouseY < buttonY+buttonH)
-    buttonPressed = true;
 }
 
 void keyTyped() {
@@ -83,6 +55,95 @@ void shoot() {
       break;
     }
   }
+}
+
+class Bullet {
+  PVector pos = new PVector(-200, -100);
+  PVector vel = new PVector(0, 0);
+  int r = 10;
+  int speed = 3;
+  
+  void show() {
+    ellipse(pos.x, pos.y, r, r);
+  }
+ 
+   void offScreenHandler() {
+      if (pos.x + r < 0) {
+        vel.x = 0;
+      }
+ 
+  
+      if (pos.x - r > width) {
+        vel.x = 0;
+      } 
+    
+      if (pos.y + r < 0) {
+        vel.y = 0;
+      
+    }
+      if (pos.y - r > height) {
+        vel.y = 0;
+      }
+    
+   }
+ 
+  void update(float dt) {
+    offScreenHandler();
+    pos.add(PVector.mult(vel, dt*speed));
+  }
+  
+}
+
+class Ball {
+  PVector pos = new PVector(0, 0);
+  PVector vel = new PVector(0, 0);
+  int r = 10;
+  int speed = 3;
+  
+  void show() {
+    ellipse(pos.x, pos.y, 2*r, 2*r);
+  }
+  
+  void keyReaction(float dt) {
+    if (key=='a') {
+      vel.x = -1;
+      if (pos.x - r < -speed*dt) {
+        vel.x = 0;
+      }
+    }
+    if (key=='d') {
+      vel.x = 1;
+      if (pos.x + r + dt*speed > width) {
+        vel.x = 0;
+      } 
+    }
+    if (key=='w') {
+      vel.y = -1;
+      if (pos.y - r  - speed*dt < 0) {
+        vel.y = 0;
+      }
+    }
+    if (key=='s') {
+      vel.y = 1;
+      if (pos.y + r > height + speed*dt) {
+        vel.y = 0;
+      }
+    }
+    if (key=='p') {
+      exit();
+    }
+    if (key=='f') {
+      ball.speed = 10;
+    }
+    if (key=='l') {
+      ball.speed = 3;
+    }
+  }
+  
+  void update(float dt) {
+    pos.add(PVector.mult(vel, dt*speed));
+  }
+  
 }
 
 class Asteroid {
@@ -117,93 +178,4 @@ class Asteroid {
     endShape(CLOSE);
   }
 
-}
-
-class Ball {
-  PVector pos = new PVector(0, 0);
-  PVector vel = new PVector(0, 0);
-  int r = 10;
-  int speed = 3;
-  
-  void show() {
-    ellipse(pos.x, pos.y, 2*r, 2*r);
-  }
-  
-  void keyReaction(float dt) {
-    if (key=='a') {
-      vel.x = -1;
-      if (pos.x - r < -speed*dt) {
-        vel.x = 0;
-      }
-    }
-    if (key=='d') {
-      vel.x = 1;
-      if (pos.x + r + dt*speed > width) {
-        vel.x = 0;
-      } 
-    }
-    if (key=='w') {
-      ball.vel.y = -1;
-      if (pos.y - r  - speed*dt < 0) {
-        vel.y = 0;
-      }
-    }
-    if (key=='s') {
-      ball.vel.y = 1;
-      if (pos.y + r > height + speed*dt) {
-         vel.y = 0;
-      }
-    }
-    if (key=='e') {
-      exit();
-    }
-    if (key=='f') {
-      speed = 10;
-    }
-    if (key=='l') {
-      speed = 3;
-    }
-  }
-  
-  void update(float dt) {
-    pos.add(PVector.mult(vel, dt*speed));
-  }
-  
-}
-
-class Bullet {
-  PVector pos = new PVector(-200, -100);
-  PVector vel = new PVector(0, 0);
-  int r = 10;
-  int speed = 3;
-  
-  void show() {
-    ellipse(pos.x, pos.y, r, r);
-  }
- 
-   void offScreenHandler() {
-      if (pos.x + r < 0) {
-        vel.x = 0;
-      }
- 
-  
-      if (pos.x - r > width) {
-        vel.x = 0;
-      } 
-    
-      if (pos.y + r < 0) {
-        ball.vel.y = 0;
-      
-    }
-      if (pos.y - r > height) {
-        ball.vel.y = 0;
-      }
-    
-   }
- 
-  void update(float dt) {
-    offScreenHandler();
-    pos.add(PVector.mult(vel, dt*speed));
-  }
-  
 }
