@@ -1,32 +1,27 @@
+// The Battle Room
 
-Ball bob = new Ball();
+Ball ball;
+Asteroid Asteroids[];
 float dt = 1;
 
 void setup() {
   size(640, 360);
+  ball = new Ball();
 }
 
 void draw() {
   background(255);
-  if (keyPressed) {
-    if (key=='a') {
-      bob.xon = true;
-    }
-    if (key=='b') {
-      bob.yon = true;
-    }
-  }
-  bob.update(dt);
-  bob.draw();
+  ball.update(dt);
+  ball.draw();
 }
 
 void keyTyped() {
-  println(key);
+  ball.keyReaction();
 }
 
 void keyReleased() {
-  if (key=='a' || key=='b') {
-    bob.xon = false;
-    bob.yon = false;
+  if (key=='a' || key=='w' || key=='s' || key=='d') {
+    ball.vel.x = 0;
+    ball.vel.y = 0;
   }
 }
