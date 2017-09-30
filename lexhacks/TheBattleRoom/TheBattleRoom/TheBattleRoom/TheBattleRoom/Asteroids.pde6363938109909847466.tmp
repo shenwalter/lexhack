@@ -1,4 +1,0 @@
-class Asteroids {
-  int[] pos = {0, 0};
-
-}
