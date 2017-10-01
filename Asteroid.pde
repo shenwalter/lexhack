@@ -35,8 +35,6 @@ class Asteroid {
     }
   }
 
-  
-
   void show() {
     fill(255);
     beginShape();
