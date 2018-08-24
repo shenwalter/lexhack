@@ -1,4 +1,6 @@
 # lexhack
+Hackathon Project for Lexhack 2017
+
 ## Inspiration
 We decided to make a game with the language Processing, which we all had downloaded for the first time today.
 
