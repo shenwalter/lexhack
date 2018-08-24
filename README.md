@@ -1,5 +1,5 @@
 # lexhack
-Hackathon Project for Lexhack 2017
+Hackathon Project for Lexhack 2017 | by Walter, Alek, Max
 
 ## Inspiration
 We decided to make a game with the language Processing, which we all had downloaded for the first time today.
